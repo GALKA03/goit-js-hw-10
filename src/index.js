@@ -30,10 +30,10 @@ function onInputCountry(e) {
     clearArticlesContainer()
     let name = refs.input.value.trim();
     console.log(name)
-    if (name === '') {
-    refs.countryMenu.innerHTML = '',
-    refs.countryInfo.innerHTML = ''  
-}
+//     if (name === '') {
+//     refs.countryMenu.innerHTML = '',
+//     refs.countryInfo.innerHTML = ''  
+// }
     fetchCountries(name)
         .then((countries) => {
             if (countries.length === 1) {
