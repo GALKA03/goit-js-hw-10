@@ -4,7 +4,7 @@ import { fetchCountries } from './js/fetchCountries';
 var debounce = require('lodash.debounce');
 import debounce from 'lodash.debounce';
 const DEBOUNCE_DELAY = 300;
-refs = {
+const refs = {
     input: document.querySelector('input'),
     countryMenu: document.querySelector('.country-list'),
     //item: document.querySelector('.country-item'),
@@ -30,7 +30,10 @@ function onInputCountry(e) {
     clearArticlesContainer()
     let name = refs.input.value.trim();
     console.log(name)
-
+    if (name === '') {
+    refs.countryMenu.innerHTML = '',
+    refs.countryInfo.innerHTML = ''  
+}
     fetchCountries(name)
         .then((countries) => {
             if (countries.length === 1) {
@@ -79,9 +82,9 @@ function onMarcapInfo(countries) {
             return `
                 <ul class ="menu__country-item-inform">
 <li class = "country-item-inform"
-                   <p><b>Capital:</b>${capital}</p> 
-                    <p><b>Population:</b>${population}</p>  
-                     <p><b>Languages:</b>${Object.values(languages)}</p> </li> 
+                   <p><b>Capital: </b>${capital}</p> 
+                    <p><b>Population: </b>${population}</p>  
+                     <p><b>Languages: </b>${Object.values(languages)}</p> </li> 
           </ul>  `
 
         }).join('');
