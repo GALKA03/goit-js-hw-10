@@ -30,12 +30,14 @@ function onInputCountry(e) {
     clearArticlesContainer()
     let name = refs.input.value.trim();
     console.log(name)
-//     if (name === '') {
-//     refs.countryMenu.innerHTML = '',
-//     refs.countryInfo.innerHTML = ''  
-// }
+//    
     fetchCountries(name)
         .then((countries) => {
+ if (name === '') {
+    refs.countryMenu.innerHTML = '',
+   refs.countryInfo.innerHTML = ''  
+ }
+
             if (countries.length === 1) {
                refs.countryMenu.insertAdjacentHTML("beforeend", onMarcapList(countries))
                refs. countryInfo.insertAdjacentHTML("beforeend", onMarcapInfo(countries)) 
@@ -50,8 +52,8 @@ function onInputCountry(e) {
             }
             })
           
-        .catch((error) => {
-            if (error.status = 404) {
+        .catch((response) => {
+            if (response.status = 404) {
           return  Notiflix.Notify.failure("Oops, there is no country with that name")
         }
 
