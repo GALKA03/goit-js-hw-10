@@ -21,5 +21,5 @@ export function fetchCountries(name) {
 //             return error;
         
 //         })
-        //.catch(error => console.log(error));
+        .catch(error => console.log(error));
 }

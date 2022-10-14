@@ -1,4 +1,5 @@
 import './css/styles.css';
+import Notiflix from 'notiflix';
 import { fetchCountries } from './js/fetchCountries';
 var debounce = require('lodash.debounce');
 import debounce from 'lodash.debounce';
@@ -7,9 +8,9 @@ refs = {
     input: document.querySelector('input'),
     countryMenu: document.querySelector('.country-list'),
     //item: document.querySelector('.country-item'),
-    countryInfo: document.querySelector('.country-info'),
-countryInfolist: document.querySelector('.country-info__list')
-    
+countryInfo: document.querySelector('.country-info'),
+countryInfolist: document.querySelector('.country-info__list'),
+articlesContainer: document.querySelector('.js-articles')
 
  }
 
@@ -26,91 +27,65 @@ refs.input.addEventListener('input', debounce(onInputCountry),DEBOUNCE_DELAY);
 
 function onInputCountry(e) { 
     e.preventDefault();
-    let name = e.target.value.trim();
+    clearArticlesContainer()
+    let name = refs.input.value.trim();
     console.log(name)
-    if (name === '') {
-        return (refs.countryMenu.innerHTML = ''), (refs.countryInfolist.innerHTML = '')
-    };
 
     fetchCountries(name)
         .then((countries) => {
-            console.log(countries)
-             
-            if (countries.length >= 10) {
-                console.log('Too many matches found. Please enter a more specific name.')
-              refs.countryMenu.innerHTML = ''
-             refs.countryInfolist.innerHTML = ''
-                return   
+            if (countries.length === 1) {
+               refs.countryMenu.insertAdjacentHTML("beforeend", onMarcapList(countries))
+               refs. countryInfo.insertAdjacentHTML("beforeend", onMarcapInfo(countries)) 
+
             }
-            if (countries.length <= 10){
-               let listMarcup = refs.countryMenu.insertAdjacentHTML("beforeend", onMarcapList(countries))    
-            //      refs.countryMenu.innerHTML = listMarcup.join('')
-            //   refs.countryInfolist.innerHTML = ''
+           else if (countries.length < 10){
+              refs.countryMenu.insertAdjacentHTML("beforeend", onMarcapList(countries))   
                 
             }
-            if (countries.length === 1) {
-                let infoMarkup = refs. countryInfo.insertAdjacentHTML("beforeend", onMarcapInfo(countries)) 
-console.log(infoMarkup)
-               refs.countryMenu.innerHTML = '';
-               refs.countryInfolist.innerHTML = infoMarkup.join('');
-               
+ else if (countries.length > 10) {
+              Notiflix.Notify.info('Too many matches found. Please enter a more specific name.') 
             }
-
-            //return refs.countryMenu.innerHTML = ''
-        //      refs.countryInfolist.innerHTML = '';
             })
           
-        .catch((error => {
-            console.log("Oops, there is no country with that name")
-           return error;
-        
-        }))
-     
-}
-// function closeMarcupText() {
-//     if (countries.length === 1) {
-//         let elem = document.querySelector(".country-item");
-//         console.log(elem)
-//  listMarcup.removeChild(elem);
-// }
-//     else if (countries.length <= 10) {
-//         let elem = document.querySelector(".menu__country-item-inform")
-//             console.log(elem);
-// infoMarkup.removeChild(elem);
-//  }
+        .catch((error) => {
+            if (error.status = 404) {
+          return  Notiflix.Notify.failure("Oops, there is no country with that name")
+        }
 
-//             refs.countryMenu.removeChild(document.querySelector('.country-item'));
-//            refs.countryMenu.remove();
- //}
+        })
+      
+}
+
+function clearArticlesContainer() {
+     refs.countryMenu.innerHTML = ''
+    refs.countryInfo.innerHTML = ''             
+}
 
 function onMarcapList(countries) {
     const marcup = countries
         .map(({ name, flags }) => {
             return `<li class = "country-item">
-            <img class = "country__flag" srs = "${flags.svg}" alt ="flag of ${name.official}">
+            <img class = "country__flag" src = "${flags.svg}" alt ="flag of ${name.official}" width = 40px height = 30px>
             <h1 class = "country__name">${name.official}</h1>
             </li>
             `
         }).join('');
+
     return marcup;
 }
-        
-
 function onMarcapInfo(countries) {
     const marcup = countries
-        .map(({ capital, population, languages, name, flags }) => {
+        .map(({ capital, population, languages}) => {
             return `
                 <ul class ="menu__country-item-inform">
-<li class = "country-item-inform">
-            <img class = "country__flag" srs = "${flags.svg}" alt ="flag of ${name.official}">
-            <h2 class = "country__name">${name.official}</h2>
-            
-                   <p><b>Capital:</b>${capital}</p> <li> 
+<li class = "country-item-inform"
+                   <p><b>Capital:</b>${capital}</p> 
                     <p><b>Population:</b>${population}</p>  
-                     <p><b>Languages:</b>${languages}</p> <li> 
+                     <p><b>Languages:</b>${Object.values(languages)}</p> </li> 
           </ul>  `
 
         }).join('');
+   // refs.countryInfolist.innerHTML = marcup;
     return marcup;
   
 }

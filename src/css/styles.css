@@ -18,3 +18,28 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+ul {
+  list-style: none;
+}
+.country-item{
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.country__name{
+ 
+  font-size: 20px;
+  font-weight: 700;
+ 
+  margin-left: 20px;
+
+}
+.menu__country-item-inform{
+  text-decoration: none;
+  word-spacing: 5px;
+}
+.input-country{
+  margin-left: 30px;
+  border-color: blue;
+}
