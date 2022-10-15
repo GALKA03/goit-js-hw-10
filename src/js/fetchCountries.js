@@ -20,6 +20,6 @@ export function fetchCountries(name) {
 //             console.log("Oops, there is no country with that name")
 //             return error;
         
-//         })
-        .catch(error => console.log(error));
-}
+//         }))
+         .catch(error => console.log(error));
+ }
