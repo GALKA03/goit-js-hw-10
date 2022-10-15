@@ -43,9 +43,11 @@ function onInputCountry(e) {
           
         .catch((error) => {   
             
-            if (error.status = 404) 
-                   refs.countryMenu.innerHTML = ''
-            refs.countryInfo.innerHTML = '';
+            if (error.status = 404) {
+         refs.countryMenu.innerHTML = '';
+            refs.countryInfo.innerHTML = '';   
+            }
+             
             return Notiflix.Notify.failure("Oops, there is no country with that name")
         })
     
